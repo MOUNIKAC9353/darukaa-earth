@@ -1,0 +1,11 @@
+npx lint-staged
+
+# Backend (Python) checks run via the `pre-commit` framework, chained here so a
+# single git hook covers both halves of the monorepo.
+if git diff --cached --name-only --diff-filter=ACM | grep -q '\.py$'; then
+  if command -v pre-commit >/dev/null 2>&1; then
+    pre-commit run --hook-stage commit
+  else
+    echo "pre-commit not found; skipping Python checks. Run: pip install pre-commit && pre-commit install"
+  fi
+fi
